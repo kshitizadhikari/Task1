@@ -4,7 +4,7 @@
         public $HOSTNAME = "localhost";
         public $USERNAME = "root";
         public $PASSWORD = "";
-        public $DATABASE = "mvc";
+        public $DATABASE = "Task1";
         public $conn;
         public $stmt;
         public $result;

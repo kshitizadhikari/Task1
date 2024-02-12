@@ -6,4 +6,9 @@
         {
             $this->view('home/index');
         }
+
+        public function signup()
+        {
+            $this->view('home/signup');
+        }
     }

@@ -10,6 +10,27 @@
                 $this->view('user/index', ['result' => $result]); 
             }
 
+            public function createUser()
+            {
+                if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                    $user = new User();
+
+                    $user->username = $_POST['username'];
+                    $user->email = $_POST['email'];
+                    $user->password = $_POST['password'];
+                    $user->role = "user";
+
+                    $userMapper = new GenericMapper($this->db, 'users');
+                    $userMapper->save($user);
+
+                    header("Location: /Task1/public/user/index");
+
+                } else {
+                    echo "User Creation Unsuccessful";
+                }
+            }
+
+
             public function edit($id)
             {
                 $userMapper = new GenericMapper($this->db, 'users');
