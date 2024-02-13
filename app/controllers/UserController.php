@@ -56,7 +56,7 @@
                 
                     header("Location: /Task1/public/user/index");
                 } else {
-                    $errorMsg = "Old Incorrect Password";
+                    $errorMsg = "<br>Incorrect Old Password";
                     return $this->view('user/editDetails', ['user' => $user, 'errorMsg' => $errorMsg]);
 
                 }
