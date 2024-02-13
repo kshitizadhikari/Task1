@@ -14,7 +14,7 @@
     </div>
     <div>
         <label>Email:</label>
-        <input type="text" value="<?php echo $user->email?>" name="email" required>
+        <input type="text" value="<?php echo $user->emailA?>" name="email" required>
     </div>
     <div>
         <label>Password:</label>
