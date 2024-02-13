@@ -1,10 +1,13 @@
-
-
 <?php 
-if(isset($data['result'])) {
-    $users = $data['result'];
-}
+    require 'admin-session.php';
+    
+    if(isset($data['result'])) {
+        $users = $data['result'];
+    }
 ?>
+
+<button onclick="window.location.href='../home/logout'">Logout</button>
+
 <h1>Admin Index Page</h1>
 <button onclick="window.location.href='createUserView'">Create User</button>
 

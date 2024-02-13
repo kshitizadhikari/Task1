@@ -1,7 +1,8 @@
 <?php 
-if(isset($data['user'])) {
-    $user = $data['user'];
-}
+    require 'admin-session.php';
+    if(isset($data['user'])) {
+        $user = $data['user'];
+    }
 ?>
 <h1>Admin Create User Page</h1>
 

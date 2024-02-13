@@ -5,9 +5,7 @@
             
             public function index()
             {
-                $userMapper = new GenericMapper($this->db, 'users');
-                $result =  $userMapper->findAll(); 
-                $this->view('user/index', ['result' => $result]); 
+                $this->view('user/index'); 
             }
 
             public function createUser()
@@ -36,7 +34,8 @@
             public function editDetailsView($id)
             {
                 $userMapper = new GenericMapper($this->db, 'users');
-                $user = $userMapper->findById($id);
+                $result = $userMapper->findById($id);
+                $user = $result[0];
                 if(!$user){
                     echo "User not found";
                 }
@@ -51,10 +50,13 @@
                 $user->username = $_POST['username'];
                 $user->email = $_POST['email'];
                 $user->role = $_POST['role'];
-                $user->password = $_POST['password'];
+                $password = $_POST['password'];
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $user->password = $hashed_password;
+
                 $userMapper->update($user);
                 
-                header("Location: /MVC/public/user/index");
+                header("Location: /Task1/public/user/index");
 
             }
 
@@ -65,7 +67,7 @@
                 if(!$userMapper->delete($id)){
                     echo "User not found";
                 }
-                header("Location: /MVC/public/user/index");
+                header("Location: /Task1/public/user/index");
 
             }
             

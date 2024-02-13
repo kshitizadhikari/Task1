@@ -1,32 +1,25 @@
 <?php 
-if(isset($data['user'])) {
-    $user = $data['user'];
-}
+    require 'user-session.php';
+
+    $user = $data['user']
 ?>
 <h1>User Edit Details Page</h1>
 
-<form action="/MVC/public/user/editUser" method="POST">
-    <input type="hidden" value="<?php echo $user[0]['id']?>" name="id">
+<form action="/Task1/public/user/editUser" method="POST">
+    <input type="hidden" value="<?php echo $user['id']?>" name="id">
+    <input type="hidden" value="<?php echo $_SESSION['user_role']?>" name="role">
     <div>
         <label>Name:</label>
-        <input type="text" value="<?php echo $user[0]['username']?>" name="username">
+        <input type="text" value="<?php echo $user['username']?>" name="username" required>
     </div>
     <div>
         <label>Email:</label>
-        <input type="text" value="<?php echo $user[0]['email']?>" name="email">
+        <input type="text" value="<?php echo $user['email']?>" name="email" required>
     </div>
     <div>
         <label>Password:</label>
-        <input type="password" value="<?php echo $user[0]['password']?>" name="password">
+        <input type="password" name="password" required>
     </div>
-    <div>
-        <label>Role:</label>
-        <select name="role">
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-            <option value="designer">Designer</option>
-            <option value="qa">QA</option>
-        </select>
-    </div>
+    
     <button>Update</button>
 </form>

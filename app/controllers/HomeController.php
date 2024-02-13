@@ -1,41 +1,72 @@
 <?php
 
-    class HomeController extends Controller
+class HomeController extends Controller
+{
+    public function index()
     {
-        public function index()
-        {
-            return $this->view('home/index');
+        return $this->view('home/index');
+    }
+
+    public function signup()
+    {
+        return $this->view('home/signup');
+    }
+
+    public function login()
+    {
+        return $this->view('home/login');
+    }
+
+    public function loginRedirect()
+    {
+        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+            header("Location: /Task1/public/home/login");
+            exit();
         }
 
-        public function signup()
-        {
-            return $this->view('home/signup');
+        $username = $_POST['username'] ?? null;
+        $password = $_POST['password'] ?? null;
+
+        if (!$username || !$password) {
+            echo "Please provide both username and password";
+            exit();
         }
 
-        public function login()
-        {
-            return $this->view('home/login');
+        $userMapper = new GenericMapper($this->db, 'users');
+        $user = $userMapper->findByUserName($username);
+
+        if (!$user) {
+            echo "User Not Found";
+            exit();
         }
 
-        public function loginRedirect()
-        {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $userMapper = new GenericMapper($this->db, 'users');
-            $user = $userMapper->findByUserName($username);
+        if (password_verify($password, $user->password)) {
+            session_start();
+            $_SESSION['loggedin'] = true;
+            $_SESSION['user_id'] = $user->id;
+            $_SESSION['user_name'] = $user->username;
+            $_SESSION['user_role'] = $user->role;
 
-
-            if(!$user)
-            {
-                echo "User Not Found";
-                die;
+            if ($user->role == 'admin') {
+                header("Location: /Task1/public/admin/index");
+                exit();
+            } elseif ($user->role == 'user') {
+                header("Location: /Task1/public/user/index");
+                exit();
             }
-            if (password_verify($password, $user->password)) {
-                echo "yay";
-            }
-
-            // return header("Location: /MVC/public/user/index");
-
-
+        } else {
+            header("Location: /Task1/public/home/login");
+            exit();
         }
     }
+
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+        header("Location: /Task1/public/home/login");
+        exit();
+    }
+}
+
+?>

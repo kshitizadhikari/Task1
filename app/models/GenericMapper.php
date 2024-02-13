@@ -34,7 +34,7 @@
                 $user->role = $row['role'];
                 return $user;
             } else {
-                echo "User not found";
+                return null;
             };
             return $result;
         }
