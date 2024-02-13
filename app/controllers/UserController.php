@@ -1,8 +1,7 @@
+    
     <?php
-
         class UserController extends Controller
         {
-            
             public function index()
             {
                 $this->view('user/index'); 
@@ -41,22 +40,26 @@
                 $this->view('user/editDetails', ['user' => $user]);
             }
 
-            public function editUser()
+            public function editDetails()
             {
                 $userMapper = new GenericMapper($this->db, 'users');
-                $user = new User;
-                $user->id = $_POST['id'];
+                $user = $userMapper->findById($_POST['id']);
                 $user->username = $_POST['username'];
                 $user->email = $_POST['email'];
                 $user->role = $_POST['role'];
-                $password = $_POST['password'];
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $user->password = $hashed_password;
 
-                $userMapper->update($user);
+                if(password_verify($_POST['oldPassword'], $user->password)){
+                    $password = $_POST['newPassword'];
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    $user->password = $hashed_password;
+                    $userMapper->update($user);
                 
-                header("Location: /Task1/public/user/index");
+                    header("Location: /Task1/public/user/index");
+                } else {
+                    $errorMsg = "Old Incorrect Password";
+                    return $this->view('user/editDetails', ['user' => $user, 'errorMsg' => $errorMsg]);
 
+                }
             }
 
             public function deleteUser($id)
