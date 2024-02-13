@@ -9,6 +9,12 @@
                 $result =  $userMapper->findAll(); 
                 $this->view('admin/index', ['result' => $result]); 
             }
+            
+
+            public function createUserView()
+            {
+                return $this->view('admin/createUser');
+            }
 
             public function createUser()
             {
@@ -18,7 +24,7 @@
                     $user->username = $_POST['username'];
                     $user->email = $_POST['email'];
                     $user->password = $_POST['password'];
-                    $user->role = "user";
+                    $user->role = $_POST['role'];
 
                     $userMapper = new GenericMapper($this->db, 'users');
                     $userMapper->save($user);
@@ -38,7 +44,7 @@
                 if(!$user){
                     echo "User not found";
                 }
-                $this->view('admin/edit', ['user' => $user]);
+                $this->view('admin/editUser', ['user' => $user]);
             }
 
             public function editUser()

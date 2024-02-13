@@ -3,19 +3,21 @@ if(isset($data['user'])) {
     $user = $data['user'];
 }
 ?>
-<form action="/Task1/public/admin/editUser" method="POST">
-    <input type="hidden" value="<?php echo $user[0]['id']?>" name="id">
+<h1>Admin Create User Page</h1>
+
+<form action="/Task1/public/admin/createUser" method="POST">
+    <input type="hidden" name="id">
     <div>
         <label>Name:</label>
-        <input type="text" value="<?php echo $user[0]['username']?>" name="username">
+        <input type="text" name="username">
     </div>
     <div>
         <label>Email:</label>
-        <input type="text" value="<?php echo $user[0]['email']?>" name="email">
+        <input type="text" name="email">
     </div>
     <div>
         <label>Password:</label>
-        <input type="password" value="<?php echo $user[0]['password']?>" name="password">
+        <input type="password" name="password">
     </div>
     <div>
         <label>Role:</label>
@@ -26,5 +28,5 @@ if(isset($data['user'])) {
             <option value="qa">QA</option>
         </select>
     </div>
-    <button>Update</button>
+    <button>Create</button>
 </form>
