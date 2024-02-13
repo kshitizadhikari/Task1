@@ -24,20 +24,23 @@ class HomeController extends Controller
             exit();
         }
 
-        $username = $_POST['username'] ?? null;
+        $usernameOrEmail = $_POST['username'] ?? null;
         $password = $_POST['password'] ?? null;
 
-        if (!$username || !$password) {
+        if (!$usernameOrEmail || !$password) {
             echo "Please provide both username and password";
             exit();
         }
 
         $userMapper = new GenericMapper($this->db, 'users');
-        $user = $userMapper->findByUserName($username);
+        $user = $userMapper->findByUserName($usernameOrEmail);
 
         if (!$user) {
-            echo "User Not Found";
-            exit();
+            $user = $userMapper->findByUserEmail($usernameOrEmail);
+            if(!$user) {
+                echo "User Not Found";
+                exit();
+            }
         }
 
         if (password_verify($password, $user->password)) {

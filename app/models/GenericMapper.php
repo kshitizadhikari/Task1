@@ -38,6 +38,25 @@
             }
         }
 
+        public function findByUserEmail($email) {
+            $sql = "SELECT * FROM $this->tableName WHERE email=?";
+            $result = $this->db->query($sql, [$email]);
+        
+            if ($result && !empty($result)) { // Check if $result is not empty
+                $row = $result[0];
+                $user = new User;
+                $user->id = $row['id'];
+                $user->username = $row['username'];
+                $user->email = $row['email'];
+                $user->password = $row['password'];
+                $user->role = $row['role'];
+                return $user;
+            } else {
+                return null;
+            }
+        }
+        
+
         public function findById($id) {
             $sql = "SELECT * FROM $this->tableName WHERE id=?";
             $result = $this->db->query($sql, [$id]);

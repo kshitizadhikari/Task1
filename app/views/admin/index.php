@@ -29,14 +29,8 @@
             <td><?php echo $user['email'] ?></td>
             <td><?php echo $user['role'] ?></td>
             <td>
-                <?php
-                    if($user['role'] !== 'admin'){
-                ?>
                 <a href="edit/<?php echo $user['id']; ?>">Edit</a> | 
                 <a href="deleteUser/<?php echo $user['id']; ?>">Delete</a>
-                <?php
-                    }
-                ?>
             </td>
         </tr>
     </tbody>
