@@ -23,8 +23,11 @@
 
                     $user->username = $_POST['username'];
                     $user->email = $_POST['email'];
-                    $user->password = $_POST['password'];
                     $user->role = $_POST['role'];
+
+                    $password = $_POST['password'];
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    $user->password = $hashed_password;
 
                     $userMapper = new GenericMapper($this->db, 'users');
                     $userMapper->save($user);

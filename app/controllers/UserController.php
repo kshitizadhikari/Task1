@@ -17,8 +17,11 @@
 
                     $user->username = $_POST['username'];
                     $user->email = $_POST['email'];
-                    $user->password = $_POST['password'];
-                    $user->role = "user";
+                    $user->role = 'user';
+
+                    $password = $_POST['password'];
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    $user->password = $hashed_password;
 
                     $userMapper = new GenericMapper($this->db, 'users');
                     $userMapper->save($user);
@@ -30,15 +33,14 @@
                 }
             }
 
-
-            public function edit($id)
+            public function editDetailsView($id)
             {
                 $userMapper = new GenericMapper($this->db, 'users');
                 $user = $userMapper->findById($id);
                 if(!$user){
                     echo "User not found";
                 }
-                $this->view('user/edit', ['user' => $user]);
+                $this->view('user/editDetails', ['user' => $user]);
             }
 
             public function editUser()

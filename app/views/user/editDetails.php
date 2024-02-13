@@ -3,6 +3,8 @@ if(isset($data['user'])) {
     $user = $data['user'];
 }
 ?>
+<h1>User Edit Details Page</h1>
+
 <form action="/MVC/public/user/editUser" method="POST">
     <input type="hidden" value="<?php echo $user[0]['id']?>" name="id">
     <div>

@@ -21,6 +21,24 @@
             return $this->db->query($sql, array_values($data)); //returns boolean value
         }
 
+        public function findByUserName($username) {
+            $sql = "SELECT * FROM $this->tableName WHERE username=?";
+            $result = $this->db->query($sql, [$username]);
+            if (!empty($result)) {
+                $row = $result[0];
+                $user = new User;
+                $user->id = $row['id'];
+                $user->username = $row['username'];
+                $user->email = $row['email'];
+                $user->password = $row['password'];
+                $user->role = $row['role'];
+                return $user;
+            } else {
+                echo "User not found";
+            };
+            return $result;
+        }
+
         public function findById($id) {
             $sql = "SELECT * FROM $this->tableName WHERE id=?";
             $result = $this->db->query($sql, [$id]);

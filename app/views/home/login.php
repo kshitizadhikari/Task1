@@ -1,8 +1,8 @@
 <a href="/Task1/public/home/index">Back To Home</a>
 
-<h1>SignUp Page</h1>
+<h1>Login Page</h1>
 
-<form action="/Task1/public/user/createUser" method="POST">
+<form action="/Task1/public/home/loginRedirect" method="POST">
     <div>
         <label>UserName: </label>
         <input type="text" name="username" required> 
@@ -16,6 +16,6 @@
         <input type="password" name="password" required> 
     </div>
     <div>
-        <button type="submit">Create</button>
+        <button type="submit">Login</button>
     </div>
 </form>
