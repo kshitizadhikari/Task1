@@ -52,18 +52,26 @@
 
             public function editUser()
             {
-                $userMapper = new GenericMapper($this->db, 'users');
-                $user = new User;
-                $user->id = $_POST['id'];
-                $user->username = $_POST['username'];
-                $user->email = $_POST['email'];
-                $user->role = $_POST['role'];
-                $user->password = $_POST['password'];
-                $userMapper->update($user);
-                
-                header("Location: /Task1/public/admin/index");
+                if(isset($_POST['id'])) {
+                    $userMapper = new GenericMapper($this->db, 'users');
+                    $user = $userMapper->findById($_POST['id']);
 
+                    if($user) {
+                        $user->username = $_POST['username'];
+                        $user->email = $_POST['email'];
+                        $user->role = $_POST['role'];
+                        $userMapper->update($user);
+                        
+                        header("Location: /Task1/public/admin/index");
+                        exit();
+                    } else {
+                        echo "User not found.";
+                    }
+                } else {
+                    echo "User ID not provided.";
+                }
             }
+
 
             public function deleteUser($id)
             {

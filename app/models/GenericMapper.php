@@ -35,14 +35,24 @@
                 return $user;
             } else {
                 return null;
-            };
-            return $result;
+            }
         }
 
         public function findById($id) {
             $sql = "SELECT * FROM $this->tableName WHERE id=?";
             $result = $this->db->query($sql, [$id]);
-            return $result;
+            if (!empty($result)) {
+                $row = $result[0];
+                $user = new User;
+                $user->id = $row['id'];
+                $user->username = $row['username'];
+                $user->email = $row['email'];
+                $user->password = $row['password'];
+                $user->role = $row['role'];
+                return $user;
+            } else {
+                return null;
+            }
         }
 
         public function findAll() {
@@ -55,17 +65,21 @@
             $data = $this->getObjectData($obj);
             $setClause = '';
             $values = [];
+            
             foreach ($data as $key => $value) {
-                if ($key !== 'id') { // Skip ID field in SET clause
-                    $setClause .= "$key=?,";
+                if ($key !== 'id') { 
+                    $setClause .= "$key=?, ";
                     $values[] = $value;
                 }
             }
-            $setClause = rtrim($setClause, ','); // Remove trailing comma
+            
+            $setClause = rtrim($setClause, ', ');
             $sql = "UPDATE $this->tableName SET $setClause WHERE id=?";
-            $values[] = $data['id']; // Add ID to values array
+            $values[] = $data['id'];
+            
             return $this->db->query($sql, $values);
         }
+        
 
 
         public function delete($id) {

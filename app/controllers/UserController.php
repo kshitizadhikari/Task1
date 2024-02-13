@@ -34,8 +34,7 @@
             public function editDetailsView($id)
             {
                 $userMapper = new GenericMapper($this->db, 'users');
-                $result = $userMapper->findById($id);
-                $user = $result[0];
+                $user = $userMapper->findById($id);
                 if(!$user){
                     echo "User not found";
                 }
