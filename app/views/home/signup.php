@@ -1,21 +1,27 @@
-<a href="/Task1/public/home/index">Back To Home</a>
+<?php include 'header.php' ?>
 
-<h1>SignUp Page</h1>
+<div class="container d-flex justify-content-center align-items-center h-100vh mt-5" style="height: 80vh;">
+    <div class="card p-5 border border-dark" style="max-width: 400px;">
+        <h1 class="text-center">SignUp</h1>
+        <form action="/Task1/public/user/createUser" method="POST">
+            <div class="mb-3">
+                <label class="form-label">UserName</label>
+                <input type="text" class="form-control border border-dark" name="username">
+                <!-- <div class="form-text">We'll never share your email with anyone else.</div> -->
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control border border-dark" name="email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control border border-dark" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
 
-<form action="/Task1/public/user/createUser" method="POST">
-    <div>
-        <label>UserName: </label>
-        <input type="text" name="username" required> 
-    </div>
-    <div>
-        <label>Email: </label>
-        <input type="email" name="email" required> 
-    </div>
-    <div>
-        <label>Password: </label>
-        <input type="password" name="password" required> 
-    </div>
-    <div>
-        <button type="submit">Create</button>
-    </div>
-</form>
+<?php include 'footer.php' ?>
+
+
