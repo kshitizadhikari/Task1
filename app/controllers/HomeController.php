@@ -34,7 +34,6 @@ class HomeController extends Controller
 
         $userMapper = new GenericMapper($this->db, 'users');
         $user = $userMapper->findByUserName($usernameOrEmail);
-
         if (!$user) {
             $user = $userMapper->findByUserEmail($usernameOrEmail);
             if(!$user) {
@@ -49,11 +48,24 @@ class HomeController extends Controller
             $_SESSION['user_id'] = $user->id;
             $_SESSION['user_name'] = $user->username;
             $_SESSION['user_role'] = $user->role;
-
+            $loginCount = 0;
             if ($user->role == 'admin') {
                 header("Location: /Task1/public/admin/index");
+                $loginCount = $user->loginCount + 1;
+                $user->loginCount = $loginCount;
+                $userMapper->update($user);
                 exit();
             } elseif ($user->role == 'user') {
+                if($user->acc_created_by !== 'user' && $user->loginCount == 0) {
+                    $loginCount = $user->loginCount + 1;
+                    $user->loginCount = $loginCount;
+                    $userMapper->update($user);
+                    header("Location: /Task1/public/user/editDetailsView/$user->id");
+                    exit();
+                }
+                $loginCount = $user->loginCount + 1;
+                $user->loginCount = $loginCount;
+                $userMapper->update($user);
                 header("Location: /Task1/public/user/index");
                 exit();
             }

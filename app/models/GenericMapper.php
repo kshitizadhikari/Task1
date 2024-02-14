@@ -32,6 +32,8 @@
                 $user->email = $row['email'];
                 $user->password = $row['password'];
                 $user->role = $row['role'];
+                $user->acc_created_by = $row['acc_created_by'];
+                $user->loginCount = $row['loginCount'];
                 return $user;
             } else {
                 return null;
@@ -50,6 +52,8 @@
                 $user->email = $row['email'];
                 $user->password = $row['password'];
                 $user->role = $row['role'];
+                $user->acc_created_by = $row['acc_created_by'];
+                $user->loginCount = $row['loginCount'];
                 return $user;
             } else {
                 return null;
@@ -68,6 +72,8 @@
                 $user->email = $row['email'];
                 $user->password = $row['password'];
                 $user->role = $row['role'];
+                $user->acc_created_by = $row['acc_created_by'];
+                $user->loginCount = $row['loginCount'];
                 return $user;
             } else {
                 return null;

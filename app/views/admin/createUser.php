@@ -8,6 +8,7 @@
 
 <form action="/Task1/public/admin/createUser" method="POST">
     <input type="hidden" name="id">
+    <input type="hidden" name="creator" value="<?php echo $user_name ?>">
     <div>
         <label>Name:</label>
         <input type="text" name="username">

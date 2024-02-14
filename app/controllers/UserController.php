@@ -15,7 +15,8 @@
                     $user->username = $_POST['username'];
                     $user->email = $_POST['email'];
                     $user->role = 'user';
-
+                    $user->acc_created_by = 'user';
+                    $user->loginCount = 0;
                     $password = $_POST['password'];
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                     $user->password = $hashed_password;

@@ -27,13 +27,15 @@
                     $password = $_POST['password'];
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                     $user->password = $hashed_password;
-
+                    $user->acc_created_by = $_POST['creator'];
+                    $user->loginCount = 0;
                     $userMapper = new GenericMapper($this->db, 'users');
                     $userMapper->save($user);
 
-                    $subject = "Account Created Successfully";
-                    $body = "UserName: $user->username     Email: $user->email     Password: $password";
-                    AdminController::sendMail($user->email, $subject, $body);
+                    // SEND MAIL FUNCTIONALITY
+                    // $subject = "Account Created Successfully";
+                    // $body = "UserName: $user->username     Email: $user->email     Password: $password";
+                    // AdminController::sendMail($user->email, $subject, $body);
                     header("Location: /Task1/public/admin/index");
 
                 } else {

@@ -12,7 +12,8 @@
         $user = null; 
     }
 ?>
-<button onclick="window.location.href='../home/logout'">Logout</button>
+<button onclick="window.location.href='../../user/index'">Back To Home</button>
+<button onclick="window.location.href='../../home/logout'">Logout</button>
 
 <h1>User Edit Details Page</h1>
 
