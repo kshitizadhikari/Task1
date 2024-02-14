@@ -1,11 +1,16 @@
     <?php
         class AdminController extends Controller
         {
+            protected $userRepository;
+
+            public function __construct() {
+                parent::__construct(); // Call parent constructor to instantiate the database connection
+                $this->userRepository = new UserRepository($this->db, 'users', 'User');
+            }
             
             public function index()
             {
-                $userMapper = new GenericMapper($this->db, 'users');
-                $result =  $userMapper->findAll(); 
+                $result =  $this->userRepository->findAll(); 
                 $this->view('admin/index', ['result' => $result]); 
             }
             
@@ -29,8 +34,7 @@
                     $user->password = $hashed_password;
                     $user->acc_created_by = $_POST['creator'];
                     $user->loginCount = 0;
-                    $userMapper = new GenericMapper($this->db, 'users');
-                    $userMapper->save($user);
+                    $this->userRepository->save($user);
 
                     // SEND MAIL FUNCTIONALITY
                     // $subject = "Account Created Successfully";
@@ -46,8 +50,7 @@
 
             public function edit($id)
             {
-                $userMapper = new GenericMapper($this->db, 'users');
-                $user = $userMapper->findById($id);
+                $user = $this->userRepository->findById($id);
                 if(!$user){
                     echo "User not found";
                 }
@@ -57,14 +60,13 @@
             public function editUser()
             {
                 if(isset($_POST['id'])) {
-                    $userMapper = new GenericMapper($this->db, 'users');
-                    $user = $userMapper->findById($_POST['id']);
+                    $user = $this->userRepository->findById($_POST['id']);
 
                     if($user) {
                         $user->username = $_POST['username'];
                         $user->email = $_POST['email'];
                         $user->role = $_POST['role'];
-                        $userMapper->update($user);
+                        $this->userRepository->update($user);
                         
                         header("Location: /Task1/public/admin/index");
                         exit();
@@ -79,10 +81,8 @@
 
             public function deleteUser($id)
             {
-                $userMapper = new GenericMapper($this->db, 'users');
-                
-                if(!$userMapper->delete($id)){
-                    echo "User not found";
+                if(!$this->userRepository->delete($id)){
+                    echo "User Deletion Unsuccessful";
                 }
                 header("Location: /Task1/public/admin/index");
             }
