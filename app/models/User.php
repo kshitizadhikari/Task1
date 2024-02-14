@@ -10,4 +10,5 @@
         public $acc_created_by;
         public $loginCount;
     }
+
 ?>

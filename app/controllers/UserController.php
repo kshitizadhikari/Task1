@@ -2,6 +2,13 @@
     <?php
         class UserController extends Controller
         {
+            protected $userRepository;
+
+            public function __construct() {
+                parent::__construct(); // Call parent constructor to instantiate the database connection
+                $this->userRepository = new UserRepository($this->db, 'users', 'User');
+            }
+            
             public function index()
             {
                 $this->view('user/index'); 
@@ -11,7 +18,6 @@
             {
                 if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $user = new User();
-
                     $user->username = $_POST['username'];
                     $user->email = $_POST['email'];
                     $user->role = 'user';
@@ -20,10 +26,7 @@
                     $password = $_POST['password'];
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                     $user->password = $hashed_password;
-
-                    $userMapper = new GenericMapper($this->db, 'users');
-                    $userMapper->save($user);
-
+                    $this->userRepository->save($user);
                     header("Location: /Task1/public/user/index");
 
                 } else {
@@ -33,8 +36,7 @@
 
             public function editDetailsView($id)
             {
-                $userMapper = new GenericMapper($this->db, 'users');
-                $user = $userMapper->findById($id);
+                $user = $this->userRepository->findById($id);
                 if(!$user){
                     echo "User not found";
                 }
@@ -43,8 +45,7 @@
 
             public function editDetails()
             {
-                $userMapper = new GenericMapper($this->db, 'users');
-                $user = $userMapper->findById($_POST['id']);
+                $user = $this->userRepository->findById($_POST['id']);
                 $user->username = $_POST['username'];
                 $user->email = $_POST['email'];
                 $user->role = $_POST['role'];
@@ -53,25 +54,11 @@
                     $password = $_POST['newPassword'];
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                     $user->password = $hashed_password;
-                    $userMapper->update($user);
-                
+                    $this->userRepository->update($user);
                     header("Location: /Task1/public/user/index");
                 } else {
                     $errorMsg = "<br>Incorrect Old Password";
                     return $this->view('user/editDetails', ['user' => $user, 'errorMsg' => $errorMsg]);
-
                 }
             }
-
-            public function deleteUser($id)
-            {
-                $userMapper = new GenericMapper($this->db, 'users');
-                
-                if(!$userMapper->delete($id)){
-                    echo "User not found";
-                }
-                header("Location: /Task1/public/user/index");
-
-            }
-            
         }

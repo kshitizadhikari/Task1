@@ -1,19 +1,19 @@
 <?php
-    class GenericMapper
+    class BaseRepository extends IBaseRepository
     {
         protected $db;
         protected $tableName;
+        protected $className;
 
-        public function __construct($db, $tableName) {
+        public function __construct($db, $tableName, $className)
+        {
             $this->db = $db;
             $this->tableName = $tableName;
-        }
-        
-        protected function getObjectData($obj) {
-            return get_object_vars($obj);
+            $this->className = $className;
         }
 
-        public function save($obj) {
+        public function save($obj)
+        {
             $data =  $this->getObjectData($obj);
             $columns = implode(', ', array_keys($data));
             $values = implode(', ', array_fill(0, count($data), '?'));
@@ -21,52 +21,29 @@
             return $this->db->query($sql, array_values($data));
         }
 
-        public function findByUserName($username) {
-            $sql = "SELECT * FROM $this->tableName WHERE username=?";
-            $result = $this->db->query($sql, [$username]);
-            if (!empty($result)) {
-                $row = $result[0];
-                $user = ObjectMapper::mapToObject($row, 'User');
-                return $user;
-            } else {
-                return null;
-            }
-        }
-
-        public function findByUserEmail($email) {
-            $sql = "SELECT * FROM $this->tableName WHERE email=?";
-            $result = $this->db->query($sql, [$email]);
-        
-            if ($result && !empty($result)) { 
-                $row = $result[0];
-                
-                $user = ObjectMapper::mapToObject($row, 'User');
-                return $user;
-            } else {
-                return null;
-            }
-        }
-        
-
-        public function findById($id) {
+        public function findById($id)
+        {
             $sql = "SELECT * FROM $this->tableName WHERE id=?";
             $result = $this->db->query($sql, [$id]);
             if (!empty($result)) {
-                $row = $result[0];
-                $user = ObjectMapper::mapToObject($row, 'User');
-                return $user;
+                $arr = $result[0];
+                $object = ObjectMapper::mapToObject($arr, $this->className);
+                return $object; //return object 
             } else {
                 return null;
             }
+
         }
 
-        public function findAll() {
+        public function findAll()
+        {
             $sql = "SELECT * FROM $this->tableName";
-            $result = $this->db->query($sql);
+            $result = $this->db->query($sql); //return associative array
             return $result;
         }
 
-        public function update($obj) {
+        public function update($obj)
+        {
             $data = $this->getObjectData($obj);
             $setClause = '';
             $values = [];
@@ -84,14 +61,13 @@
             
             return $this->db->query($sql, $values);
         }
-        
 
-
-        public function delete($id) {
+        public function delete($id)
+        {
             $sql = "DELETE FROM $this->tableName WHERE id=?";
             $result = $this->db->query($sql, [$id]);
             return $result;
         }
-        
+
     }
 ?>
