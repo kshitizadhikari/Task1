@@ -2,6 +2,14 @@
 
 class HomeController extends Controller
 {
+
+    protected $userRepository;
+
+    public function __construct() {
+        parent::__construct(); // Call parent constructor to instantiate the database connection
+        $this->userRepository = new UserRepository($this->db, 'users', 'User');
+    }
+
     public function index()
     {
         return $this->view('home/index');
@@ -32,10 +40,9 @@ class HomeController extends Controller
             exit();
         }
 
-        $userMapper = new GenericMapper($this->db, 'users');
-        $user = $userMapper->findByUserName($usernameOrEmail);
+        $user = $this->userRepository->findByUserName($usernameOrEmail);
         if (!$user) {
-            $user = $userMapper->findByUserEmail($usernameOrEmail);
+            $user = $this->userRepository->findByUserEmail($usernameOrEmail);
             if(!$user) {
                 echo "User Not Found";
                 exit();
@@ -53,19 +60,19 @@ class HomeController extends Controller
                 header("Location: /Task1/public/admin/index");
                 $loginCount = $user->loginCount + 1;
                 $user->loginCount = $loginCount;
-                $userMapper->update($user);
+                $this->userRepository->update($user);
                 exit();
             } elseif ($user->role == 'user') {
                 if($user->acc_created_by !== 'user' && $user->loginCount == 0) {
                     $loginCount = $user->loginCount + 1;
                     $user->loginCount = $loginCount;
-                    $userMapper->update($user);
+                    $this->userRepository->update($user);
                     header("Location: /Task1/public/user/editDetailsView/$user->id");
                     exit();
                 }
                 $loginCount = $user->loginCount + 1;
                 $user->loginCount = $loginCount;
-                $userMapper->update($user);
+                $this->userRepository->update($user);
                 header("Location: /Task1/public/user/index");
                 exit();
             }
