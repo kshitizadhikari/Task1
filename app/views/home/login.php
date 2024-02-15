@@ -13,7 +13,9 @@
                 <label class="form-label">Password</label>
                 <input type="password" class="form-control border border-dark" name="password">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </form>
     </div>
 </div>

@@ -1,5 +1,4 @@
 <?php 
-    require 'user-session.php';
     include 'user-header.php';
 ?>
 <div>

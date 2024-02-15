@@ -55,6 +55,7 @@ class HomeController extends Controller
             $_SESSION['user_id'] = $user->id;
             $_SESSION['user_name'] = $user->username;
             $_SESSION['user_role'] = $user->role;
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));               
             $loginCount = 0;
             if ($user->role == 'admin') {
                 header("Location: /Task1/public/admin/index");

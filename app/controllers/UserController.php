@@ -17,6 +17,7 @@
             public function createUser()
             {
                 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                    
                     $user = new User();
                     $user->username = $_POST['username'];
                     $user->email = $_POST['email'];
@@ -44,21 +45,35 @@
             }
 
             public function editDetails()
-            {
-                $user = $this->userRepository->findById($_POST['id']);
-                $user->username = $_POST['username'];
-                $user->email = $_POST['email'];
-                $user->role = $_POST['role'];
+            {                                                                               
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                    UserController::validate_csrf_token($_POST['csrf_token']);
 
-                if(password_verify($_POST['oldPassword'], $user->password)){
-                    $password = $_POST['newPassword'];
-                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    $user->password = $hashed_password;
-                    $this->userRepository->update($user);
-                    header("Location: /Task1/public/user/index");
-                } else {
-                    $errorMsg = "<br>Incorrect Old Password";
-                    return $this->view('user/editDetails', ['user' => $user, 'errorMsg' => $errorMsg]);
+                    $user = $this->userRepository->findById($_POST['id']);
+                    $user->username = $_POST['username'];
+                    $user->email = $_POST['email'];
+                    $user->role = $_POST['role'];
+
+                    if(password_verify($_POST['oldPassword'], $user->password)){
+                        $password = $_POST['newPassword'];
+                        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                        $user->password = $hashed_password;
+                        $this->userRepository->update($user);
+                        header("Location: /Task1/public/user/index");
+                    } else {
+                        $errorMsg = "<br>Incorrect Old Password";
+                        return $this->view('user/editDetails', ['user' => $user, 'errorMsg' => $errorMsg]);
+                    }
                 }
+                
+            }
+
+            public static function validate_csrf_token($token)
+            {
+                session_start(); 
+                if($token !== $_SESSION['csrf_token'])
+                    {
+                        echo "CSRF token mistmatch"; die;
+                    } 
             }
         }

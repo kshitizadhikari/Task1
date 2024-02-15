@@ -1,6 +1,4 @@
 <?php 
-    require 'user-session.php';
-    
     if(isset($data['errorMsg'])) { 
         $errorMsg = $data['errorMsg'];
         echo $errorMsg;
@@ -12,12 +10,16 @@
         $user = null; 
     }
     include 'user-header.php';
+    require 'user-session.php';
+
 ?>
 
 <div class="container d-flex justify-content-center align-items-center h-100vh mt-5" style="height: 80vh;">
     <div class="card p-5 border border-dark" style="max-width: 400px;">
         <h1 class="text-center">Edit User</h1>
         <form action="/Task1/public/user/editDetails" method="POST">
+
+            <input type="hidden" value="<?php echo $csrf_token?>" name="csrf_token">
             <input type="hidden" value="<?php echo $user->id?>" name="id">
             <input type="hidden" value="<?php echo $_SESSION['user_role']?>" name="role">
             <div class="mb-3">
